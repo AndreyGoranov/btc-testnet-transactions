@@ -1,0 +1,17 @@
+{
+  "name": "bitcoin-test-transactions",
+  "version": "1.0.0",
+  "description": "testnet transactions with bitcoin",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "bitcore-lib": "^10.0.36",
+    "dotenv": "^16.4.5"
+  }
+}
