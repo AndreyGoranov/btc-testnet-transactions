@@ -43,8 +43,3 @@ export const checkBalance = async (address) => {
     }
   }
 };
-
-await checkBalance(receivingWallet.address)
-
-
-await checkBalance(sendingWallet.address);
