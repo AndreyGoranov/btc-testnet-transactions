@@ -17,7 +17,9 @@ describe("checkBalance", () => {
 
     console.log = jest.fn(); // Mock console.log to suppress logs during tests
 
-    await checkBalance(address);
+    const balance = await checkBalance(address);
+
+    expect(balance).toBe(12000);
 
     // Check if the correct logs were produced
     expect(console.log).toHaveBeenCalledWith(

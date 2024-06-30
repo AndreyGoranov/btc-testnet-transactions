@@ -34,6 +34,8 @@ export const checkBalance = async (address) => {
     const balance = response.data.reduce((sum, utxo) => sum + utxo.value, 0);
 
     console.log("BALANCE:", balance);
+
+    return balance
   } catch (err) {
     console.error('Error fetching balance:', err.message);
     if (err.response) {
