@@ -2,9 +2,7 @@ import axios from "axios";
 import dotenv from 'dotenv';
 dotenv.config()
 
-const { API_BASE_URL, CYPHER_TOKEN } = process.env;
-
-console.log(API_BASE_URL, CYPHER_TOKEN, 'asda')
+const { BLOCKSTREAM_API_BASE } = process.env;
 
 export const receivingWallet = {
   address: "mqhsrHYC9AAaJtG3Wqcwt8dog2Wqqiqrve",
@@ -16,15 +14,37 @@ export const sendingWallet = {
   privateKey: "cPCVCEaPbbohPmSrywWvqrEoG5mLgCo88FJ94j5Ekkkhgkga1pNw",
 };
 
+// Moving to https://github.com/Blockstream/esplora/blob/master/API.md
+
 export const checkBalance = async (address) => {
   try {
-    const response = await axios.get(
-      `${API_BASE_URL}/addrs/${address}/balance?token=${CYPHER_TOKEN}`
-    );
-    console.log("BALANCE:", response.data);
+    const url = `${BLOCKSTREAM_API_BASE}/address/${address}/utxo`;
+    console.log(`Fetching balance for address: ${address}`);
+    console.log(`Using URL: ${url}`);
+
+    // Fetch UTXOs for the address
+    const response = await axios.get(url, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log('UTXOs fetched:', response.data);
+
+    // Calculate the total balance by summing the value of all UTXOs
+    const balance = response.data.reduce((sum, utxo) => sum + utxo.value, 0);
+
+    console.log("BALANCE:", balance);
   } catch (err) {
-    console.log(err);
+    console.error('Error fetching balance:', err.message);
+    if (err.response) {
+      console.error('Response data:', err.response.data);
+      console.error('Response status:', err.response.status);
+      console.error('Response headers:', err.response.headers);
+    }
   }
 };
 
-checkBalance(sendingWallet.address);
+await checkBalance(receivingWallet.address)
+
+
+await checkBalance(sendingWallet.address);
