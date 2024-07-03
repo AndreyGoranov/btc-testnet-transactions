@@ -27,6 +27,12 @@ export const getUTXOs = async (address) => {
     `${BLOCKSTREAM_API_BASE}/address/${address}/utxo`
   );
   console.log("UTXOs fetched:", response.data);
+
+  if (!response.data.length) {
+    console.log("No UTXOs available for the address:", sourceAddress);
+    throw new Error("No UTXOs available for the address:", sourceAddress)
+  }
+
   return response.data.map((utxo) => ({
     txId: utxo.txid,
     outputIndex: utxo.vout,
@@ -76,3 +82,6 @@ export const createAndSendTransaction = async () => {
     console.error("Error creating and sending transaction:", error);
   }
 };
+
+
+createAndSendTransaction();
